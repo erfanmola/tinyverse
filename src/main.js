@@ -2452,6 +2452,12 @@ const handleAnimation = () => {
 	let star;
 	let i;
 
+	window.addEventListener("resize", () => {
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+		initializeStars();
+	});
+
 	const animate = true;
 
 	initializeStars();
@@ -2539,11 +2545,16 @@ const handleAnimation = () => {
 		synth.loadMIDI(await response.arrayBuffer());
 		synth.setLoop(true);
 
-		if (interacted) {
+		const playFile = () => {
+			document.querySelector("p")?.remove();
 			synth.playMIDI();
+		};
+
+		if (interacted) {
+			playFile();
 		} else {
 			const playAudio = () => {
-				synth.playMIDI();
+				playFile();
 
 				document.removeEventListener("click", playAudio);
 				document.removeEventListener("keydown", playAudio);
